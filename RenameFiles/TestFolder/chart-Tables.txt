@@ -1,0 +1,153 @@
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DEV_tbl_CFG_ChartType]') AND type in (N'U'))
+
+	CREATE TABLE [dbo].[DEV_tbl_CFG_ChartType]( 
+		[GUID]									[UNIQUEIDENTIFIER]	DEFAULT (NEWSEQUENTIALID())		NOT NULL, 
+		[ID]									[BIGINT]			IDENTITY(1,1)			NOT NULL, 
+
+		[Title]									[NVARCHAR](200)								NOT NULL,
+		[Description]							[NVARCHAR](200)								NULL,
+
+		[XMLColumns]							[XML]										NULL, 	
+		[VersionNumber]							[INT]				DEFAULT (1)				NOT NULL, 
+		[VersionGUID]							[UNIQUEIDENTIFIER]							NULL, 
+		[FKLanguageGUID]						[UNIQUEIDENTIFIER]							NULL,
+		[FKCreatedByGUID]						[UNIQUEIDENTIFIER]							NULL, 
+		[CreatedDT]								[DATETIME2]			DEFAULT (GETDATE())		NOT NULL, 
+		[FKModifiedByGUID]						[UNIQUEIDENTIFIER]							NULL,
+		[ModifiedDT]							[DATETIME2]									NULL, 	
+		[IsDeletedByUser]						[BIT]				DEFAULT (0)				NOT NULL, 
+		[FKDeletedByUserGUID]					[UNIQUEIDENTIFIER]							NULL,
+		[DeletedByUserDT]						[DATETIME2]									NULL, 	
+		[IsDeletedByIQon]						[BIT]				DEFAULT (0)				NOT NULL,
+		[FKDeletedByIQonGUID]					[UNIQUEIDENTIFIER]							NULL,
+		[DeletedByIQonDT]						[DATETIME2]									NULL, 	
+		[FKDatabaseObjectGUID]					[UNIQUEIDENTIFIER]							NULL, 
+	CONSTRAINT [PK_DEV_tbl_CFG_ChartType] PRIMARY KEY CLUSTERED 
+	( 
+		[GUID] ASC 
+	) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = OFF, ALLOW_PAGE_LOCKS = OFF, FILLFACTOR = 90) ON [PRIMARY]
+	) ON [PRIMARY]
+GO
+
+
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DEV_tbl_CFG_ChartDataStep]') AND type in (N'U'))
+
+	CREATE TABLE [dbo].[DEV_tbl_CFG_ChartDataStep]( 
+		[GUID]									[UNIQUEIDENTIFIER]	DEFAULT (NEWSEQUENTIALID())		NOT NULL, 
+		[ID]									[BIGINT]			IDENTITY(1,1)			NOT NULL, 
+
+		[Title]									[NVARCHAR](200)								NOT NULL,
+		[Description]							[NVARCHAR](200)								NULL,
+
+		[XMLColumns]							[XML]										NULL, 	
+		[VersionNumber]							[INT]				DEFAULT (1)				NOT NULL, 
+		[VersionGUID]							[UNIQUEIDENTIFIER]							NULL, 
+		[FKLanguageGUID]						[UNIQUEIDENTIFIER]							NULL,
+		[FKCreatedByGUID]						[UNIQUEIDENTIFIER]							NULL, 
+		[CreatedDT]								[DATETIME2]			DEFAULT (GETDATE())		NOT NULL, 
+		[FKModifiedByGUID]						[UNIQUEIDENTIFIER]							NULL,
+		[ModifiedDT]							[DATETIME2]									NULL, 	
+		[IsDeletedByUser]						[BIT]				DEFAULT (0)				NOT NULL, 
+		[FKDeletedByUserGUID]					[UNIQUEIDENTIFIER]							NULL,
+		[DeletedByUserDT]						[DATETIME2]									NULL, 	
+		[IsDeletedByIQon]						[BIT]				DEFAULT (0)				NOT NULL,
+		[FKDeletedByIQonGUID]					[UNIQUEIDENTIFIER]							NULL,
+		[DeletedByIQonDT]						[DATETIME2]									NULL, 	
+		[FKDatabaseObjectGUID]					[UNIQUEIDENTIFIER]							NULL, 
+	CONSTRAINT [PK_DEV_tbl_CFG_ChartDataStep] PRIMARY KEY CLUSTERED 
+	( 
+		[GUID] ASC 
+	) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = OFF, ALLOW_PAGE_LOCKS = OFF, FILLFACTOR = 90) ON [PRIMARY]
+	) ON [PRIMARY]
+GO
+
+
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DEV_tbl_CFG_Chart]') AND type in (N'U'))
+
+	CREATE TABLE [dbo].[DEV_tbl_CFG_Chart]( 
+		[GUID]									[UNIQUEIDENTIFIER]	DEFAULT (NEWSEQUENTIALID())		NOT NULL, 
+		[ID]									[BIGINT]			IDENTITY(1,1)			NOT NULL, 
+
+		[FKComponentGUID]						[UNIQUEIDENTIFIER]							NOT NULL,
+		--[Title]									NVARCHAR(50)								NOT NULL,
+		[SourceView]							[NVARCHAR](200)								NOT NULL,
+		[FKChartTypeGUID]						[UNIQUEIDENTIFIER]							NOT NULL,				--REFERENCES DEV_TBL_CFG_CHARTTYPE(GUID),
+		[FKDataStepGUID]						[UNIQUEIDENTIFIER]							NOT NULL,  --NEW TABLE!
+		[AmounOfDataStepsBackward]				[INTEGER]									NOT NULL,
+		[DateEnd]								[DATETIME2]									NOT NULL,
+		[IsTodayEnd]							[BIT]					DEFAULT (0)				NOT NULL,
+		[FilterExpression]						[NVARCHAR](MAX)								NULL, 
+		[IsLegendVisible]						[BIT]				DEFAULT (0)				NOT NULL,
+		[IsAxisXVisible]						[BIT]				DEFAULT (0)				NOT NULL,
+		[IsAxisYVisible]						[BIT]				DEFAULT (0)				NOT NULL,
+		[IsAxisXWithMark]						[BIT]				DEFAULT (0)				NOT NULL,
+		[IsAxisYWithMark]						[BIT]				DEFAULT (0)				NOT NULL,
+		[IsAxisXWithLabel]						[BIT]				DEFAULT (0)				NOT NULL,
+		[IsAxisYWithLabel]						[BIT]				DEFAULT (0)				NOT NULL,
+		[IsAxisXWithName]						[BIT]				DEFAULT (0)				NOT NULL,
+		[IsAxisYWithName]						[BIT]				DEFAULT (0)				NOT NULL,
+		[IsAxisXWithLine]						[BIT]				DEFAULT (0)				NOT NULL,
+		[IsAxisYWithLine]						[BIT]				DEFAULT (0)				NOT NULL,
+		[AxisXMinValue]							[INT]				DEFAULT (0)				NOT NULL,
+		[AxisXMaxValue]							[INT]				DEFAULT (0)				NOT NULL,
+		[AxisYMinValue]							[INT]				DEFAULT (0)				NOT NULL,
+		[AxisYMaxValue]							[INT]				DEFAULT (0)				NOT NULL,
+
+
+		[XMLColumns]							[XML]										NULL, 	
+		[VersionNumber]							[INT]				DEFAULT (1)				NOT NULL, 
+		[VersionGUID]							[UNIQUEIDENTIFIER]							NULL, 
+		[FKLanguageGUID]						[UNIQUEIDENTIFIER]							NULL,
+		[FKCreatedByGUID]						[UNIQUEIDENTIFIER]							NULL, 
+		[CreatedDT]								[DATETIME2]			DEFAULT (GETDATE())		NOT NULL, 
+		[FKModifiedByGUID]						[UNIQUEIDENTIFIER]							NULL,
+		[ModifiedDT]							[DATETIME2]									NULL, 	
+		[IsDeletedByUser]						[BIT]				DEFAULT (0)				NOT NULL, 
+		[FKDeletedByUserGUID]					[UNIQUEIDENTIFIER]							NULL,
+		[DeletedByUserDT]						[DATETIME2]									NULL, 	
+		[IsDeletedByIQon]						[BIT]				DEFAULT (0)				NOT NULL,
+		[FKDeletedByIQonGUID]					[UNIQUEIDENTIFIER]							NULL,
+		[DeletedByIQonDT]						[DATETIME2]									NULL, 	
+		[FKDatabaseObjectGUID]					[UNIQUEIDENTIFIER]							NULL, 
+	CONSTRAINT [PK_DEV_tbl_CFG_Chart] PRIMARY KEY CLUSTERED 
+	( 
+		[GUID] ASC 
+	) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = OFF, ALLOW_PAGE_LOCKS = OFF, FILLFACTOR = 90) ON [PRIMARY]
+	) ON [PRIMARY]
+GO
+
+
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DEV_tbl_CFG_ChartItem]') AND type in (N'U'))
+
+	CREATE TABLE [dbo].[DEV_tbl_CFG_ChartItem]( 
+		[GUID]									[UNIQUEIDENTIFIER]	DEFAULT (NEWSEQUENTIALID())		NOT NULL, 
+		[ID]									[BIGINT]			IDENTITY(1,1)			NOT NULL, 
+
+		[ItemColor]								[NVARCHAR](50)								NOT NULL,
+		[FKItemTypeGUID]						[UNIQUEIDENTIFIER],													--REFERENCES DEV_tbl_Chart(GUID),
+		[CalulationFunction]					[NVARCHAR](200)								NULL, -- if null just shows a count of the items
+
+		[XMLColumns]							[XML]										NULL, 	
+		[VersionNumber]							[INT]				DEFAULT (1)				NOT NULL, 
+		[VersionGUID]							[UNIQUEIDENTIFIER]							NULL, 
+		[FKLanguageGUID]						[UNIQUEIDENTIFIER]							NULL,
+		[FKCreatedByGUID]						[UNIQUEIDENTIFIER]							NULL, 
+		[CreatedDT]								[DATETIME2]			DEFAULT (GETDATE())		NOT NULL, 
+		[FKModifiedByGUID]						[UNIQUEIDENTIFIER]							NULL,
+		[ModifiedDT]							[DATETIME2]									NULL, 	
+		[IsDeletedByUser]						[BIT]				DEFAULT (0)				NOT NULL, 
+		[FKDeletedByUserGUID]					[UNIQUEIDENTIFIER]							NULL,
+		[DeletedByUserDT]						[DATETIME2]									NULL, 	
+		[IsDeletedByIQon]						[BIT]				DEFAULT (0)				NOT NULL,
+		[FKDeletedByIQonGUID]					[UNIQUEIDENTIFIER]							NULL,
+		[DeletedByIQonDT]						[DATETIME2]									NULL, 	
+		[FKDatabaseObjectGUID]					[UNIQUEIDENTIFIER]							NULL, 
+	CONSTRAINT [PK_DEV_tbl_CFG_ChartItem] PRIMARY KEY CLUSTERED 
+	( 
+		[GUID] ASC 
+	) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = OFF, ALLOW_PAGE_LOCKS = OFF, FILLFACTOR = 90) ON [PRIMARY]
+	) ON [PRIMARY]
+GO
